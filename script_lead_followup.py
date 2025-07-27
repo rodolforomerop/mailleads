@@ -1,3 +1,4 @@
+
 import os
 import base64
 import json
@@ -51,7 +52,7 @@ def send_resend_email(api_key, to_email, user_name, imei):
                 </p>
                 <p>Si ya registraste tu equipo por otro medio o tienes alguna pregunta, no dudes en contactar a nuestro equipo de soporte.</p>
                 <hr style="border: none; border-top: 1px solid #eee; margin: 20px 0;" />
-                <p style="font-size: 12px; color: #888;">Si ya completaste el registro, por favor ignora este mensaje.</p>
+                <p style="font-size: 12px; color: #888;">Si ya completaste el registro para este IMEI, por favor ignora este mensaje.</p>
             </div>
             """
     }
@@ -122,16 +123,20 @@ def main():
             print(f" - Lead {lead_id} no tiene email o imei. Saltando.")
             continue
 
-        print(f"\nProcesando lead: {lead_id} ({lead_email})")
+        print(f"\nProcesando lead: {lead_id} ({lead_email} - IMEI: {lead_imei})")
 
-        registros_ref = db.collection('registros').where('customerEmail', '==', lead_email).limit(1).stream()
+        # Verifica si ya existe un registro para ESE email Y ESE imei
+        registros_ref = db.collection('registros') \
+                          .where('customerEmail', '==', lead_email) \
+                          .where('imei1', '==', lead_imei) \
+                          .limit(1).stream()
         
         if any(registros_ref):
-            print(f"  - El usuario {lead_email} ya tiene un registro. Marcando como contactado para no volver a enviar.")
+            print(f"  - Ya existe un registro para el email {lead_email} y el IMEI {lead_imei}. Marcando para no enviar.")
             db.collection('leads').document(lead_id).update({'followUpSent': True})
             continue
         
-        print(f"  - El usuario {lead_email} no ha comprado. Enviando correo de seguimiento...")
+        print(f"  - El usuario {lead_email} no ha comprado para este IMEI. Enviando correo...")
         email_sent = send_resend_email(resend_api_key, lead_email, lead_name, lead_imei)
 
         if email_sent:
