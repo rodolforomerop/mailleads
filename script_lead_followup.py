@@ -24,14 +24,14 @@ def initialize_firebase():
     return firestore.client()
 
 def send_resend_email(api_key, to_email, user_name, imei):
-    """Envía el correo de seguimiento usando la API de Resend."""
+    """Envía el correo de seguimiento usando la API de Resend y una plantilla de React."""
     if not api_key:
         print(" - RESEND_API_KEY no encontrada. No se puede enviar el correo.")
         return False
 
     url = "https://api.resend.com/emails"
     
-    # Payload con HTML directamente para cumplir con la API de Resend
+    # Payload que usa la plantilla de React. `sendEmail` se encargará de renderizarlo.
     payload = {
         "from": "Registro IMEI Multibanda <registro@registroimeimultibanda.cl>",
         "to": [to_email],
