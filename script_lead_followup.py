@@ -37,22 +37,51 @@ def send_resend_email(api_key, to_email, user_name, imei):
         "to": [to_email],
         "subject": f"🤔 {user_name}, ¿olvidaste registrar tu IMEI?",
         "html": f"""
-            <div style="font-family: sans-serif; line-height: 1.6;">
-                <h1 style="color: #333;">¡Hola!</h1>
-                <p>Notamos que hace un tiempo verificaste el IMEI <strong>{imei}</strong> en nuestro sitio y descubriste que necesita ser registrado para operar en Chile.</p>
-                <p>No dejes que tu equipo sea bloqueado y te quedes sin conexión. El proceso para inscribirlo es rápido, 100% online y está respaldado por nuestra garantía de entrega en menos de 90 minutos.</p>
-                <p style="margin-top: 24px; margin-bottom: 24px;">
-                    <a 
-                        href="https://registroimeimultibanda.cl/registro-dispositivo?imei={imei}&email={to_email}" 
-                        style="background-color: #009959; color: white; padding: 12px 20px; text-decoration: none; border-radius: 5px; font-weight: bold;"
-                    >
-                        Completar mi Registro Ahora
-                    </a>
-                </p>
-                <p>Si ya registraste tu equipo por otro medio o tienes alguna pregunta, no dudes en contactar a nuestro equipo de soporte.</p>
-                <hr style="border: none; border-top: 1px solid #eee; margin: 20px 0;" />
-                <p style="font-size: 12px; color: #888;">Si ya completaste el registro para este IMEI, por favor ignora este mensaje.</p>
-            </div>
+            <!DOCTYPE html>
+            <html lang="es">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <style>
+                    body {{ margin: 0; background-color: #f4f4f7; font-family: sans-serif; }}
+                    .container {{ background-color: #ffffff; border: 1px solid #e0e0e0; border-radius: 8px; margin: 32px auto; padding: 32px; max-width: 520px; }}
+                    .logo {{ text-align: center; }}
+                    .text {{ font-size: 16px; color: #333333; line-height: 1.6; }}
+                    .button-section {{ text-align: center; margin: 24px 0; }}
+                    .button {{ background-color: #009959; color: #ffffff; font-weight: 600; border-radius: 6px; padding: 12px 24px; text-decoration: none; }}
+                    .footer-text {{ font-size: 12px; color: #888888; text-align: center; }}
+                </style>
+            </head>
+            <body>
+                <div class="container">
+                    <div class="logo">
+                        <img src="https://registroimeimultibanda.cl/Logo%20Registro%20IMEI%20Multibanda%20Chile.webp" width="180" alt="Registro IMEI Multibanda Chile" />
+                    </div>
+                    <h1 style="font-size: 20px; font-weight: bold; margin-top: 32px;">¡Hola!</h1>
+                    <p class="text">
+                        Notamos que hace un tiempo verificaste el IMEI <strong>{imei}</strong> en nuestro sitio y descubriste que necesita ser registrado para operar en Chile.
+                    </p>
+                    <p class="text">
+                        No dejes que tu equipo sea bloqueado y te quedes sin conexión. El proceso para inscribirlo es rápido, 100% online y está respaldado por nuestra garantía de entrega en menos de 90 minutos.
+                    </p>
+                    <div class="button-section">
+                        <a href="https://registroimeimultibanda.cl/registro-dispositivo?imei={imei}&email={to_email}" class="button">
+                            Completar mi Registro Ahora
+                        </a>
+                    </div>
+                    <p class="text">
+                        Si ya registraste tu equipo por otro medio o tienes alguna pregunta, no dudes en contactar a nuestro equipo de soporte.
+                    </p>
+                    <hr style="border: none; border-top: 1px solid #e0e0e0; margin: 24px 0;" />
+                    <p class="footer-text">
+                        Si ya completaste el registro para este IMEI, por favor ignora este mensaje.
+                    </p>
+                    <p class="footer-text">
+                        © {datetime.now().year} Registro IMEI Multibanda. Todos los derechos reservados.
+                    </p>
+                </div>
+            </body>
+            </html>
             """
     }
     
